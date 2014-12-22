@@ -9,17 +9,14 @@ var Month = module.exports = React.createClass({
   },
 
   handleChange (event) {
-    this.props.onChange(event.target.value);
+    this.props.onChange(parseInt(event.target.value, 10));
   },
 
   render () {
     var options = this.props.locale.months.map((monthName, index) => {
       var monthIndex = index + 1;
-      return (
-        <option key={monthName} value={monthIndex}>
-          {pad(monthIndex)} {monthName}
-        </option>
-      );
+      var text = `${pad(monthIndex)} ${monthName}`;
+      return <option key={monthIndex} value={monthIndex}>{text}</option>;
     });
     return <select
       defaultValue={this.props.selectedMonth}

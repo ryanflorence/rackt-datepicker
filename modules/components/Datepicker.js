@@ -1,8 +1,10 @@
 var React = require('react');
 var cloneWithProps = require('react/lib/cloneWithProps');
-var enUS = require('../locales/enUS.js');
+var enUS = require('../locale/enUS.js');
 var moment = require('moment');
 var Month = require('./Month');
+var Day = require('./Day');
+var Year = require('./Year');
 
 var DelegatedProps = {
   getDelegatedProps () {
@@ -55,23 +57,34 @@ var DatePicker = module.exports = React.createClass({
     ]
   },
 
-  handleMonthChange (value) {
-    this.setState({
-      selectedMonth: value
-    });
+  handleMonthChange (newMonth) {
+    this.setState({ selectedMonth: newMonth});
+  },
+
+  handleDayChange (newDay) {
+    this.setState({ selectedDay: newDay});
+  },
+
+  handleYearChange (newYear) {
+    this.setState({ selectedYear: newYear});
   },
 
   render () {
+    var { selectedMonth, selectedYear, selectedDay } = this.state;
     var children = React.Children.map(this.props.children, (child) => {
       var props = this.getDelegatedProps();
       if (child.type === Month.type)
         props.onChange = this.handleMonthChange;
+      if (child.type === Day.type)
+        props.onChange = this.handleDayChange;
+      if (child.type === Year.type)
+        props.onChange = this.handleYearChange;
       return cloneWithProps(child, props);
     });
-
     return (
       <div>
         {children}
+        <pre>{selectedMonth} {selectedDay} {selectedYear}</pre>
       </div>
     );
   }
