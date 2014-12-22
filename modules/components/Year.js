@@ -5,6 +5,7 @@ var Year = module.exports = React.createClass({
   displayName: 'Year',
 
   propTypes: {
+    value: React.PropTypes.instanceOf(Date).isRequired,
     onChange: React.PropTypes.func.isRequired
   },
 
@@ -17,17 +18,24 @@ var Year = module.exports = React.createClass({
   },
 
   handleChange (event) {
-    this.props.onChange(parseInt(event.target.value, 10));
+    var { value } = this.props;
+    var newDate = new Date(
+      parseInt(event.target.value, 10),
+      value.getMonth(),
+      value.getDate()
+    );
+    this.props.onChange(newDate);
   },
 
+
   render () {
-    var { startYear, endYear, selectedYear } = this.props;
+    var { startYear, endYear, value } = this.props;
     var options = numberRange(startYear, endYear).map((year) => {
       return <option key={year} value={year}>{year}</option>;
     });
     return <select
       onChange={this.handleChange}
-      defaultValue={selectedYear}
+      defaultValue={value.getFullYear()}
     >{options}</select>;
   }
 });

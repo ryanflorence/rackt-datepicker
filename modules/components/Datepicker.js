@@ -38,12 +38,7 @@ var DatePicker = module.exports = React.createClass({
 
   getInitialState () {
     var value = this.props.defaultValue || new Date();
-    return {
-      value,
-      selectedMonth: value.getMonth() + 1,
-      selectedYear: value.getFullYear(),
-      selectedDay: value.getDate()
-    };
+    return { value };
   },
 
   delegate: {
@@ -52,44 +47,21 @@ var DatePicker = module.exports = React.createClass({
     ],
 
     state: [
-      'selectedDay',
-      'selectedMonth',
-      'selectedYear'
+      'value'
     ]
   },
 
-  handleChange () {
-    this.props.onChange(this.state.value);
-  },
-
-  handleMonthChange (newMonth) {
-    var { selectedYear, selectedDay } = this.state;
-    var value = new Date(selectedYear, newMonth, selectedDay);
-    this.setState({ value, selectedMonth: newMonth }, this.handleChange);
-  },
-
-  handleDayChange (newDay) {
-    var { selectedYear, selectedMonth } = this.state;
-    var value = new Date(selectedYear, selectedMonth, newDay);
-    this.setState({ value, selectedDay: newDay}, this.handleChange);
-  },
-
-  handleYearChange (newYear) {
-    var { selectedMonth, selectedDay } = this.state;
-    var value = new Date(newYear, selectedMonth, selectedDay);
-    this.setState({ value, selectedYear: newYear}, this.handleChange);
+  handleChange (newDate) {
+    this.setState({ value: newDate }, () => {
+      this.props.onChange(this.state.value);
+    });
   },
 
   render () {
     var { selectedMonth, selectedYear, selectedDay } = this.state;
     var children = React.Children.map(this.props.children, (child) => {
       var props = this.getDelegatedProps();
-      if (child.type === Month.type)
-        props.onChange = this.handleMonthChange;
-      if (child.type === Day.type)
-        props.onChange = this.handleDayChange;
-      if (child.type === Year.type)
-        props.onChange = this.handleYearChange;
+      props.onChange = this.handleChange;
       return cloneWithProps(child, props);
     });
     return <div>{children}</div>;

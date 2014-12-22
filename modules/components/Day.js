@@ -2,15 +2,11 @@ var React = require('react');
 var getDaysForMonth = require('../utils/getDaysForMonth');
 var pad = require('../utils/pad');
 
-// handle month change and day doesn't exist
-
 var Day = module.exports = React.createClass({
   displayName: 'Day',
 
   propTypes: {
-    selectedDay: React.PropTypes.number.isRequired,
-    selectedMonth: React.PropTypes.number.isRequired,
-    selectedYear: React.PropTypes.number.isRequired,
+    value: React.PropTypes.instanceOf(Date).isRequired,
     onChange: React.PropTypes.func.isRequired
   },
 
@@ -23,19 +19,26 @@ var Day = module.exports = React.createClass({
   },
 
   handleChange (event) {
-    this.props.onChange(parseInt(event.target.value, 10));
+    var { value } = this.props;
+    var newDate = new Date(
+      value.getFullYear(),
+      value.getMonth(),
+      parseInt(event.target.value, 10)
+    );
+    this.props.onChange(newDate);
   },
 
   validateDay () {
-    var { selectedYear, selectedMonth, selectedDay } = this.props;
-    var days = getDaysForMonth(selectedYear, selectedMonth);
-    if (selectedDay > days[days.length - 1].getDate())
+    var { value } = this.props;
+    console.log(value);
+    var days = getDaysForMonth(value.getFullYear(), value.getMonth());
+    if (value.getDate() > days[days.length - 1].getDate())
       this.props.onChange(1);
   },
 
   render () {
-    var { locale, selectedYear, selectedMonth, selectedDay } = this.props;
-    var days = getDaysForMonth(selectedYear, selectedMonth);
+    var { locale, value } = this.props;
+    var days = getDaysForMonth(value.getFullYear(), value.getMonth());
     var options = days.map((day, index) => {
       var weekday = locale.days[day.getDay()];
       var dayIndex = index + 1;
@@ -44,7 +47,7 @@ var Day = module.exports = React.createClass({
     });
     return <select
       onChange={this.handleChange}
-      defaultValue={selectedDay}
+      defaultValue={value.getDate()}
     >{options}</select>;
   }
 });

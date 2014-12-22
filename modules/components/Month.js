@@ -5,11 +5,18 @@ var Month = module.exports = React.createClass({
   displayName: 'Month',
 
   propTypes: {
+    value: React.PropTypes.instanceOf(Date).isRequired,
     onChange: React.PropTypes.func.isRequired
   },
 
   handleChange (event) {
-    this.props.onChange(parseInt(event.target.value, 10));
+    var { value } = this.props;
+    var newDate = new Date(
+      value.getFullYear(),
+      parseInt(event.target.value - 1, 10),
+      value.getDate()
+    );
+    this.props.onChange(newDate);
   },
 
   render () {
@@ -19,7 +26,7 @@ var Month = module.exports = React.createClass({
       return <option key={monthIndex} value={monthIndex}>{text}</option>;
     });
     return <select
-      defaultValue={this.props.selectedMonth}
+      defaultValue={this.props.value.getMonth()+1}
       onChange={this.handleChange}
     >{options}</select>;
   }
