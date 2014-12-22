@@ -35,7 +35,7 @@ var Year = module.exports = React.createClass({
     });
     return <select
       onChange={this.handleChange}
-      defaultValue={value.getFullYear()}
+      value={value.getFullYear()}
     >{options}</select>;
   }
 });

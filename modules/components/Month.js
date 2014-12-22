@@ -26,7 +26,7 @@ var Month = module.exports = React.createClass({
       return <option key={monthIndex} value={monthIndex}>{text}</option>;
     });
     return <select
-      defaultValue={this.props.value.getMonth()+1}
+      value={this.props.value.getMonth()+1}
       onChange={this.handleChange}
     >{options}</select>;
   }

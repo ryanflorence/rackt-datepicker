@@ -30,7 +30,6 @@ var Day = module.exports = React.createClass({
 
   validateDay () {
     var { value } = this.props;
-    console.log(value);
     var days = getDaysForMonth(value.getFullYear(), value.getMonth());
     if (value.getDate() > days[days.length - 1].getDate())
       this.props.onChange(1);
@@ -47,7 +46,7 @@ var Day = module.exports = React.createClass({
     });
     return <select
       onChange={this.handleChange}
-      defaultValue={value.getDate()}
+      value={value.getDate()}
     >{options}</select>;
   }
 });
