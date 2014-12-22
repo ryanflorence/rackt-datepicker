@@ -54,13 +54,13 @@ var App = React.createClass({
         <p>
           <input
             value={this.state.foo}
-            onChange={this.handleFooChange}
+            readOnly={true}
           />
         </p>
         <p>
           <Datepicker
             value={this.state.date}
-            onChange={this.handleDateChange}
+            readOnly={true}
           >
             <Month/>
             <Day/>
