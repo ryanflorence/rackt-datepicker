@@ -37,11 +37,12 @@ var DatePicker = module.exports = React.createClass({
   },
 
   getInitialState () {
-    var now = new Date();
+    var value = this.props.defaultValue || new Date();
     return {
-      selectedMonth: now.getMonth() + 1,
-      selectedYear: now.getFullYear(),
-      selectedDay: now.getDate()
+      value,
+      selectedMonth: value.getMonth() + 1,
+      selectedYear: value.getFullYear(),
+      selectedDay: value.getDate()
     };
   },
 
@@ -57,16 +58,26 @@ var DatePicker = module.exports = React.createClass({
     ]
   },
 
+  handleChange () {
+    this.props.onChange(this.state.value);
+  },
+
   handleMonthChange (newMonth) {
-    this.setState({ selectedMonth: newMonth});
+    var { selectedYear, selectedDay } = this.state;
+    var value = new Date(selectedYear, newMonth, selectedDay);
+    this.setState({ value, selectedMonth: newMonth }, this.handleChange);
   },
 
   handleDayChange (newDay) {
-    this.setState({ selectedDay: newDay});
+    var { selectedYear, selectedMonth } = this.state;
+    var value = new Date(selectedYear, selectedMonth, newDay);
+    this.setState({ value, selectedDay: newDay}, this.handleChange);
   },
 
   handleYearChange (newYear) {
-    this.setState({ selectedYear: newYear});
+    var { selectedMonth, selectedDay } = this.state;
+    var value = new Date(newYear, selectedMonth, selectedDay);
+    this.setState({ value, selectedYear: newYear}, this.handleChange);
   },
 
   render () {
@@ -81,12 +92,7 @@ var DatePicker = module.exports = React.createClass({
         props.onChange = this.handleYearChange;
       return cloneWithProps(child, props);
     });
-    return (
-      <div>
-        {children}
-        <pre>{selectedMonth} {selectedDay} {selectedYear}</pre>
-      </div>
-    );
+    return <div>{children}</div>;
   }
 });
 

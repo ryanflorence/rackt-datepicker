@@ -18,3 +18,7 @@ a.active {
 .breadcrumbs a {
   text-decoration: none;
 }
+
+select:focus {
+  outline: 1px;
+}
