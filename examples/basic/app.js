@@ -5,10 +5,15 @@ var slug = () => {
   return Math.random().toString(16).slice(2, 10);
 };
 
+var today = new Date();
+var tenYearsFromToday = new Date(today.getFullYear() + 10, 0, 1);
+
 var randomDate = () => {
+  // make sure our random dates are always valid (1 year ahead)
+  var thisYear = today.getFullYear();
   return new Date(
-    randomInt(2004, 2023),
-    randomInt(1, 12),
+    randomInt(thisYear + 1, tenYearsFromToday.getFullYear()),
+    randomInt(0, 11),
     randomInt(1, 28)
   );
 };
@@ -20,18 +25,22 @@ var randomInt = (min, max) => {
 var App = React.createClass({
   getInitialState () {
     return {
-      foo: 'FOO',
+      invalidDate: false,
       date: randomDate()
     };
   },
 
   changeStuff () {
     var date = this.state.date;
-    this.setState({ foo: slug(), date: randomDate() });
+    this.setState({
+      invalidDate: false,
+      date: randomDate()
+    });
   },
 
   handleDateChange (date) {
-    this.setState({ date: date });
+    var invalidDate = date < today;
+    this.setState({ date: date, invalidDate });
   },
 
   handleFooChange (event) {
@@ -45,25 +54,21 @@ var App = React.createClass({
           <button onClick={this.changeStuff}>Change Stuff</button>
         </p>
 
-        <input
-          value={this.state.foo}
-          readOnly={true}
-        />
-
         <Datepicker
           value={this.state.date}
           onChange={this.handleDateChange}
         >
           <Month aria-label="Month"/>
           <Day aria-label="Day"/>
-          <Year aria-label="Year"/>
+          <Year range={[today, tenYearsFromToday]} aria-label="Year"/>
         </Datepicker>
 
         <pre>
           {this.state.date.toString()}
-          {'\n'}
-          {this.state.foo}
         </pre>
+        <p>
+          {this.state.invalidDate ? 'Please choose a date in the future' : ''}
+        </p>
       </div>
     );
   }

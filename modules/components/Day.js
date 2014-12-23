@@ -4,6 +4,7 @@ var pad = require('../utils/pad');
 var DateFragment = require('../mixins/DateFragment');
 
 var Day = module.exports = React.createClass({
+
   displayName: 'Day',
 
   mixins: [ DateFragment ],
@@ -13,7 +14,7 @@ var Day = module.exports = React.createClass({
   },
 
   render () {
-    var { locale, value } = this.props;
+    var { locale, value, range } = this.props;
     var days = getDaysForMonth(value.getFullYear(), value.getMonth());
     var options = days.map((day, index) => {
       var weekday = locale.days[day.getDay()];
@@ -25,5 +26,6 @@ var Day = module.exports = React.createClass({
     props.value = value.getDate();
     return <select {...props}>{options}</select>;
   }
+
 });
 

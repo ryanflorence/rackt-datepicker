@@ -8,16 +8,17 @@ var warning = require('react/lib/warning');
 var normalizeDay = require('../utils/normalizeDay');
 
 var { bool, func, array, shape, string, instanceOf, arrayOf } = React.PropTypes;
-var date = instanceOf(date);
+var date = instanceOf(Date);
 
 var DatePicker = module.exports = React.createClass({
+
   displayName: 'DatePicker',
 
   propTypes: {
-    range: arrayOf(date),
     defaultValue: date,
     readOnly: bool,
     onChange: func,
+    onValidationError: func,
     locale: shape({
       months: arrayOf(string),
       days: arrayOf(string)
@@ -32,6 +33,7 @@ var DatePicker = module.exports = React.createClass({
   },
 
   getDefaultProps () {
+    var today = new Date();
     return {
       locale: enUS,
       readOnly: false
@@ -45,19 +47,15 @@ var DatePicker = module.exports = React.createClass({
 
   componentWillReceiveProps (newProps) {
     if (newProps.value)
-      this.handleNewValue(newProps.value);
+      this.setState({ value: newProps.value });
   },
 
-  handleNewValue (newValue) {
-    this.setState({ value: newValue });
-  },
-
-  handleChange (displayName, val) {
+  handleChange (displayName, fragmentValue) {
     if (this.props.value && !this.props.onChange)
       return;
     var handler = this.changeHandlers[displayName.toLowerCase()];
-    var newDate = handler.call(this, val);
-    this.setState({ value: newDate }, () => {
+    var newValue = handler.call(this, fragmentValue);
+    this.setState({ value: newValue }, () => {
       this.props.onChange(this.state.value);
     });
   },
@@ -94,11 +92,11 @@ var DatePicker = module.exports = React.createClass({
       return cloneWithProps(child, {
         locale: this.props.locale,
         value: this.state.value,
-        range: this.props.range,
         onChange: this.handleChange.bind(this, child.type.displayName)
       });
     });
     return <div>{children}</div>;
   }
+
 });
 
