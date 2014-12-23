@@ -54,9 +54,9 @@ var App = React.createClass({
           value={this.state.date}
           onChange={this.handleDateChange}
         >
-          <Year aria-label="Year"/>
           <Month aria-label="Month"/>
           <Day aria-label="Day"/>
+          <Year aria-label="Year"/>
         </Datepicker>
 
         <pre>

@@ -1,14 +1,11 @@
 var React = require('react');
 var numberRange = require('../utils/numberRange');
-var cloneWithExclusions = require('../utils/cloneWithExclusions');
+var DateFragment = require('../mixins/DateFragment');
 
 var Year = module.exports = React.createClass({
   displayName: 'Year',
 
-  propTypes: {
-    value: React.PropTypes.instanceOf(Date).isRequired,
-    onChange: React.PropTypes.func.isRequired
-  },
+  mixins: [ DateFragment ],
 
   getDefaultProps () {
     var thisYear = new Date().getFullYear();
@@ -18,8 +15,8 @@ var Year = module.exports = React.createClass({
     };
   },
 
-  handleChange (event) {
-    this.props.onChange(parseInt(event.target.value, 10));
+  getOnChangeValue (event) {
+    return parseInt(event.target.value, 10);
   },
 
   render () {
@@ -27,10 +24,7 @@ var Year = module.exports = React.createClass({
     var options = numberRange(startYear, endYear).map((year) => {
       return <option key={year} value={year}>{year}</option>;
     });
-    var props = cloneWithExclusions(this.props, [
-      'locale', 'onChange', 'value'
-    ]);
-    props.onChange = this.handleChange;
+    var props = this.propsForComponent();
     props.value = value.getFullYear();
     return <select {...props}>{options}</select>;
   }

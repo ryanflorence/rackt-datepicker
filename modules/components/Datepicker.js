@@ -5,6 +5,7 @@ var cloneWithProps = require('react/lib/cloneWithProps');
 var enUS = require('../locale/enUS.js');
 var moment = require('moment');
 var warning = require('react/lib/warning');
+var normalizeDay = require('../utils/normalizeDay');
 
 var { bool, func, array, shape, string, instanceOf, arrayOf } = React.PropTypes;
 var date = instanceOf(date);
@@ -62,7 +63,7 @@ var DatePicker = module.exports = React.createClass({
   },
 
   getDateAsValues () {
-    var { value } = this.props;
+    var { value } = this.state;
     return {
       year: value.getFullYear(),
       month: value.getMonth(),
@@ -71,19 +72,20 @@ var DatePicker = module.exports = React.createClass({
   },
 
   changeHandlers: {
-    year (val) {
+    year (newYear) {
       var { month, day } = this.getDateAsValues();
-      return new Date(val, month, day);
+      return new Date(newYear, month, day);
     },
 
-    month (val) {
+    month (newMonth) {
       var { year, day } = this.getDateAsValues();
-      return new Date(year, val, day);
+      var normalizedDay = normalizeDay(year, newMonth, day);
+      return new Date(year, newMonth, normalizedDay);
     },
 
-    day (val) {
+    day (newDay) {
       var { year, month} = this.getDateAsValues();
-      return new Date(year, month, val);
+      return new Date(year, month, newDay);
     }
   },
 
@@ -92,6 +94,7 @@ var DatePicker = module.exports = React.createClass({
       return cloneWithProps(child, {
         locale: this.props.locale,
         value: this.state.value,
+        range: this.props.range,
         onChange: this.handleChange.bind(this, child.type.displayName)
       });
     });
