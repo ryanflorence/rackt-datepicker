@@ -1,5 +1,6 @@
 var React = require('react');
 var pad = require('../utils/pad');
+var cloneWithExclusions = require('../utils/cloneWithExclusions');
 
 var Month = module.exports = React.createClass({
   displayName: 'Month',
@@ -10,13 +11,7 @@ var Month = module.exports = React.createClass({
   },
 
   handleChange (event) {
-    var { value } = this.props;
-    var newDate = new Date(
-      value.getFullYear(),
-      parseInt(event.target.value - 1, 10),
-      value.getDate()
-    );
-    this.props.onChange(newDate);
+    this.props.onChange(parseInt(event.target.value - 1, 10));
   },
 
   render () {
@@ -25,11 +20,12 @@ var Month = module.exports = React.createClass({
       var text = `${pad(monthIndex)} ${monthName}`;
       return <option key={monthIndex} value={monthIndex}>{text}</option>;
     });
-    return <select
-      value={this.props.value.getMonth()+1}
-      onChange={this.handleChange}
-    >{options}</select>;
+    var props = cloneWithExclusions(this.props, [
+      'locale', 'onChange', 'value'
+    ]);
+    props.value = this.props.value.getMonth()+1;
+    props.onChange = this.handleChange;
+    return <select {...props}>{options}</select>;
   }
 });
-
 

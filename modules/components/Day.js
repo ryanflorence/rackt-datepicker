@@ -1,6 +1,7 @@
 var React = require('react');
 var getDaysForMonth = require('../utils/getDaysForMonth');
 var pad = require('../utils/pad');
+var cloneWithExclusions = require('../utils/cloneWithExclusions');
 
 var Day = module.exports = React.createClass({
   displayName: 'Day',
@@ -19,13 +20,7 @@ var Day = module.exports = React.createClass({
   },
 
   handleChange (event) {
-    var { value } = this.props;
-    var newDate = new Date(
-      value.getFullYear(),
-      value.getMonth(),
-      parseInt(event.target.value, 10)
-    );
-    this.props.onChange(newDate);
+    this.props.onChange(parseInt(event.target.value, 10));
   },
 
   validateDay () {
@@ -44,10 +39,12 @@ var Day = module.exports = React.createClass({
       var text = `${pad(dayIndex)} ${weekday}`;
       return <option key={dayIndex} value={dayIndex}>{text}</option>;
     });
-    return <select
-      onChange={this.handleChange}
-      value={value.getDate()}
-    >{options}</select>;
+    var props = cloneWithExclusions(this.props, [
+      'locale', 'onChange', 'value'
+    ]);
+    props.onChange = this.handleChange;
+    props.value = value.getDate();
+    return <select {...props}>{options}</select>;
   }
 });
 

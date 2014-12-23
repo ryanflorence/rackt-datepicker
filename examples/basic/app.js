@@ -27,22 +27,15 @@ var App = React.createClass({
 
   changeStuff () {
     var date = this.state.date;
-    this.setState({
-      foo: slug(),
-      date: randomDate()
-    });
+    this.setState({ foo: slug(), date: randomDate() });
   },
 
   handleDateChange (date) {
-    this.setState({
-      date: date
-    });
+    this.setState({ date: date });
   },
 
   handleFooChange (event) {
-    this.setState({
-      foo: event.target.value
-    });
+    this.setState({ foo: event.target.value });
   },
 
   render () {
@@ -51,22 +44,21 @@ var App = React.createClass({
         <p>
           <button onClick={this.changeStuff}>Change Stuff</button>
         </p>
-        <p>
-          <input
-            value={this.state.foo}
-            readOnly={true}
-          />
-        </p>
-        <p>
-          <Datepicker
-            value={this.state.date}
-            readOnly={true}
-          >
-            <Month/>
-            <Day/>
-            <Year/>
-          </Datepicker>
-        </p>
+
+        <input
+          value={this.state.foo}
+          readOnly={true}
+        />
+
+        <Datepicker
+          value={this.state.date}
+          onChange={this.handleDateChange}
+        >
+          <Year aria-label="Year"/>
+          <Month aria-label="Month"/>
+          <Day aria-label="Day"/>
+        </Datepicker>
+
         <pre>
           {this.state.date.toString()}
           {'\n'}

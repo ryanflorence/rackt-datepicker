@@ -1,5 +1,6 @@
 var React = require('react');
 var numberRange = require('../utils/numberRange');
+var cloneWithExclusions = require('../utils/cloneWithExclusions');
 
 var Year = module.exports = React.createClass({
   displayName: 'Year',
@@ -18,26 +19,20 @@ var Year = module.exports = React.createClass({
   },
 
   handleChange (event) {
-    var { value } = this.props;
-    var newDate = new Date(
-      parseInt(event.target.value, 10),
-      value.getMonth(),
-      value.getDate()
-    );
-    this.props.onChange(newDate);
+    this.props.onChange(parseInt(event.target.value, 10));
   },
-
 
   render () {
     var { startYear, endYear, value } = this.props;
     var options = numberRange(startYear, endYear).map((year) => {
       return <option key={year} value={year}>{year}</option>;
     });
-    return <select
-      onChange={this.handleChange}
-      value={value.getFullYear()}
-    >{options}</select>;
+    var props = cloneWithExclusions(this.props, [
+      'locale', 'onChange', 'value'
+    ]);
+    props.onChange = this.handleChange;
+    props.value = value.getFullYear();
+    return <select {...props}>{options}</select>;
   }
 });
-
 
