@@ -1,37 +1,26 @@
 var React = require('react');
 var { Datepicker, Month, Day, Year, Hours, Minutes, Seconds } = require('react-datepicker');
+var {
+  slug,
+  today,
+  tenYearsFromToday,
+  tenYearsAgo,
+  randomDate,
+  randomInt
+} = require('./helpers');
 
-
-var slug = () => {
-  return Math.random().toString(16).slice(2, 10);
-};
-
-var today = new Date();
-var tenYearsFromToday = new Date(today.getFullYear() + 10, 0, 1);
-
-var randomDate = () => {
-  // make sure our random dates are always valid (1 year ahead)
-  var thisYear = today.getFullYear();
-  return new Date(
-    randomInt(thisYear + 1, tenYearsFromToday.getFullYear()),
-    randomInt(0, 11),
-    randomInt(1, 28),
-    randomInt(0, 23),
-    randomInt(0, 59),
-    randomInt(0, 59)
-  );
-};
-
-var randomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
+////////////////////////////////////////////////////////////////////////////////
+// Highly composable, make your own components that interact with the Datepicker
+////////////////////////////////////////////////////////////////////////////////
 var Today = React.createClass({
   statics: {
+    // this is how <Datepicker/> knows to pay attention to the element
     datePickerChild: true
   },
 
   handleClick () {
+    // Datepicker will pass in an `onChange` to you, call it when your
+    // component wants to change the value
     this.props.onChange(new Date());
   },
 
@@ -40,24 +29,28 @@ var Today = React.createClass({
   }
 });
 
-var Yesterday = React.createClass({
+var SubtractYear = React.createClass({
   statics: {
     datePickerChild: true
   },
 
   handleClick () {
-    var date = new Date();
-    date.setDate(today.getDate()-1);
-    this.props.onChange(date);
+    // you also get `this.props.value` for the current value
+    var year = this.props.value.getFullYear();
+    // and you can change just a fragment of the date with key:value
+    this.props.onChange({ year: year - 1});
   },
 
   render () {
-    return <button onClick={this.handleClick}>Yesterday</button>;
+    return <button onClick={this.handleClick}>Subtract Year</button>;
   }
 });
 
 
 
+////////////////////////////////////////////////////////////////////////////////
+// The Demo app, note that any children can live inside <Datepicker/>
+////////////////////////////////////////////////////////////////////////////////
 var App = React.createClass({
   getInitialState () {
     return {
@@ -88,20 +81,20 @@ var App = React.createClass({
       <div>
         <p><button onClick={this.changeStuff}>Change Stuff</button></p>
         <pre>{this.state.date.toString()}</pre>
-
         <hr/>
 
         <p><label htmlFor="year">Pick a date in the future!</label></p>
+
         <Datepicker value={this.state.date} onChange={this.handleDateChange}>
           <p>
-            <Year id="year" range={[today, tenYearsFromToday]} aria-label="Year"/>
+            <Year id="year" range={[tenYearsAgo, tenYearsFromToday]} aria-label="Year"/>
             <Month aria-label="Month"/>
             <Day aria-label="Day"/>
             <Hours aria-label="Hours"/>:
             <Minutes aria-label="Minutes"/>:
             <Seconds aria-label="Seconds"/>
           </p>
-          <p><Today/> <Yesterday/></p>
+          <p><Today/> <SubtractYear/></p>
         </Datepicker>
 
         <hr/>
