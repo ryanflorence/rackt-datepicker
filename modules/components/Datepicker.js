@@ -10,7 +10,7 @@ var date = instanceOf(Date);
 
 var DatePicker = module.exports = React.createClass({
 
-  displayName: 'DatePicker',
+  displayName: 'Datepicker',
 
   propTypes: {
     defaultValue: date,
