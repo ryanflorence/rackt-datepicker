@@ -58,10 +58,10 @@ var DatePicker = module.exports = React.createClass({
 
   render () {
     var children = recursivelyMapChildren(this.props.children, (child) => {
-      return cloneWithProps(child, {
+      return (child.type.datePickerChild) ? cloneWithProps(child, {
         value: this.state.value,
         onChange: this.handleChange
-      });
+      }) : child;
     });
     return <div>{children}</div>;
   }

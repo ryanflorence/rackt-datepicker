@@ -8,6 +8,10 @@ var Year = module.exports = React.createClass({
 
   mixins: [ FragmentSelect ],
 
+  statics: {
+    datePickerChild: true
+  },
+
   getDefaultProps () {
     var today = new Date();
     return {

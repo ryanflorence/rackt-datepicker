@@ -5,6 +5,10 @@ var Minutes = module.exports = React.createClass({
 
   displayName: 'Minutes',
 
+  statics: {
+    datePickerChild: true
+  },
+
   mixins: [ Sixty ],
 
   getValue (value) {

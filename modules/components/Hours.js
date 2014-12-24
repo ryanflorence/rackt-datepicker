@@ -9,6 +9,10 @@ var Hour = module.exports = React.createClass({
 
   mixins: [ FragmentSelect ],
 
+  statics: {
+    datePickerChild: true
+  },
+
   getDefaultProps () {
     return { am: 'AM', pm: 'PM' };
   },

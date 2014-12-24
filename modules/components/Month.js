@@ -8,6 +8,10 @@ var Month = module.exports = React.createClass({
 
   displayName: 'Month',
 
+  statics: {
+    datePickerChild: true
+  },
+
   mixins: [ FragmentSelect, Locale ],
 
   getOnChangeValue (event) {
@@ -25,8 +29,7 @@ var Month = module.exports = React.createClass({
     var { locale, value } = this.props;
     return locale.months.map((monthName, monthIndex) => {
       var month = monthIndex + 1;
-      //var text = `${pad(month)} ${monthName}`;
-      var text = `${monthName}`;
+      var text = `${pad(month)} ${monthName}`;
       return <option key={month} value={month}>{text}</option>;
     });
   }

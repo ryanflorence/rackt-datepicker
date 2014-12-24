@@ -8,6 +8,10 @@ var Day = module.exports = React.createClass({
 
   displayName: 'Day',
 
+  statics: {
+    datePickerChild: true
+  },
+
   mixins: [ FragmentSelect, Locale ],
 
   getOnChangeValue (event) {
