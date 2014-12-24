@@ -3,13 +3,9 @@ var Sixty = require('../mixins/Sixty');
 
 var Seconds = module.exports = React.createClass({
 
-  displayName: 'Minute',
+  displayName: 'Minutes',
 
   mixins: [ Sixty ],
-
-  getDefaultProps () {
-    return { fragment: 'seconds' };
-  },
 
   getValue (value) {
     return value.getSeconds();

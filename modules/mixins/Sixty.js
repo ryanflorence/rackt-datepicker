@@ -8,7 +8,9 @@ var Sixty = module.exports = {
   mixins: [ FragmentSelect ],
 
   getOnChangeValue (event) {
-    return parseInt(event.target.value, 10);
+    var changes = {};
+    changes[this.displayName.toLowerCase()] = parseInt(event.target.value, 10);
+    return changes;
   },
 
   renderOptions () {

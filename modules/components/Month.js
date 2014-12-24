@@ -1,5 +1,6 @@
 var React = require('react');
 var pad = require('../utils/pad');
+var normalizeDay = require('../utils/normalizeDay');
 var FragmentSelect = require('../mixins/FragmentSelect');
 
 var Month = module.exports = React.createClass({
@@ -8,12 +9,11 @@ var Month = module.exports = React.createClass({
 
   mixins: [ FragmentSelect ],
 
-  getDefaultProps () {
-    return { fragment: 'month' };
-  },
-
   getOnChangeValue (event) {
-    return parseInt(event.target.value - 1, 10);
+    var year = this.props.value.getFullYear();
+    var month = parseInt(event.target.value - 1, 10);
+    var day = normalizeDay(year, month, this.props.value.getDate());
+    return { month, day };
   },
 
   getValue (date) {

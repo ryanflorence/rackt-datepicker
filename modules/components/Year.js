@@ -11,7 +11,6 @@ var Year = module.exports = React.createClass({
   getDefaultProps () {
     var today = new Date();
     return {
-      fragment: 'year',
       range: [
         new Date(today.getFullYear() - 10, today.getMonth()),
         new Date(today.getFullYear() + 10, today.getMonth())
@@ -20,7 +19,7 @@ var Year = module.exports = React.createClass({
   },
 
   getOnChangeValue (event) {
-    return parseInt(event.target.value, 10);
+    return { year: parseInt(event.target.value, 10) };
   },
 
   renderOptions () {

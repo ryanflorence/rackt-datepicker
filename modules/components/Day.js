@@ -9,12 +9,8 @@ var Day = module.exports = React.createClass({
 
   mixins: [ FragmentSelect ],
 
-  getDefaultProps () {
-    return { fragment: 'day' };
-  },
-
   getOnChangeValue (event) {
-    return parseInt(event.target.value, 10);
+    return { day: parseInt(event.target.value, 10) };
   },
 
   getValue (date) {

@@ -6,6 +6,7 @@ var enUS = require('../locale/enUS.js');
 var moment = require('moment');
 var warning = require('react/lib/warning');
 var normalizeDay = require('../utils/normalizeDay');
+var recursivelyMapChildren = require('../utils/recursivelyMapChildren');
 
 var { bool, func, array, shape, string, instanceOf, arrayOf } = React.PropTypes;
 var date = instanceOf(Date);
@@ -50,16 +51,6 @@ var DatePicker = module.exports = React.createClass({
       this.setState({ value: newProps.value });
   },
 
-  handleChange (fragmentName, fragmentValue) {
-    if (this.props.value && !this.props.onChange)
-      return;
-    var handler = this.changeHandlers[fragmentName];
-    var newValue = handler.call(this, fragmentValue);
-    this.setState({ value: newValue }, () => {
-      this.props.onChange(this.state.value);
-    });
-  },
-
   getDateValues () {
     var { value } = this.state;
     return {
@@ -70,6 +61,20 @@ var DatePicker = module.exports = React.createClass({
       minutes: value.getMinutes(),
       seconds: value.getSeconds()
     };
+  },
+
+  handleChange (changes) {
+    if (this.props.value && !this.props.onChange)
+      return;
+    var values = Object.keys(changes).reduce((values, fragment) => {
+      values[fragment] = changes[fragment];
+      return values;
+    }, this.getDateValues());
+    var { year, month, day, hours, minutes, seconds } = values;
+    var newValue = new Date(year, month, day, hours, minutes, seconds);
+    this.setState({ value: newValue }, () => {
+      this.props.onChange(this.state.value);
+    });
   },
 
   changeHandlers: {
@@ -106,11 +111,11 @@ var DatePicker = module.exports = React.createClass({
   },
 
   render () {
-    var children = React.Children.map(this.props.children, (child) => {
+    var children = recursivelyMapChildren(this.props.children, (child) => {
       return cloneWithProps(child, {
         locale: this.props.locale,
         value: this.state.value,
-        onChange: this.handleChange.bind(this, child.props.fragment)
+        onChange: this.handleChange
       });
     });
     return <div>{children}</div>;
