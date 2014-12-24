@@ -2,12 +2,13 @@ var React = require('react');
 var getDaysForMonth = require('../utils/getDaysForMonth');
 var pad = require('../utils/pad');
 var FragmentSelect = require('../mixins/FragmentSelect');
+var Locale = require('../mixins/Locale');
 
 var Day = module.exports = React.createClass({
 
   displayName: 'Day',
 
-  mixins: [ FragmentSelect ],
+  mixins: [ FragmentSelect, Locale ],
 
   getOnChangeValue (event) {
     return { day: parseInt(event.target.value, 10) };

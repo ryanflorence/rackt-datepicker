@@ -3,7 +3,7 @@ var Sixty = require('../mixins/Sixty');
 
 var Seconds = module.exports = React.createClass({
 
-  displayName: 'Minutes',
+  displayName: 'Seconds',
 
   mixins: [ Sixty ],
 

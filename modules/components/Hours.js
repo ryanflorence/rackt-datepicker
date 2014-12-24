@@ -10,14 +10,11 @@ var Hour = module.exports = React.createClass({
   mixins: [ FragmentSelect ],
 
   getDefaultProps () {
-    return {
-      am: 'AM',
-      pm: 'PM'
-    };
+    return { am: 'AM', pm: 'PM' };
   },
 
   getOnChangeValue (event) {
-    return { hour: parseInt(event.target.value, 10) };
+    return { hours: parseInt(event.target.value, 10) };
   },
 
   getHourText (hour) {

@@ -2,12 +2,13 @@ var React = require('react');
 var pad = require('../utils/pad');
 var normalizeDay = require('../utils/normalizeDay');
 var FragmentSelect = require('../mixins/FragmentSelect');
+var Locale = require('../mixins/Locale');
 
 var Month = module.exports = React.createClass({
 
   displayName: 'Month',
 
-  mixins: [ FragmentSelect ],
+  mixins: [ FragmentSelect, Locale ],
 
   getOnChangeValue (event) {
     var year = this.props.value.getFullYear();

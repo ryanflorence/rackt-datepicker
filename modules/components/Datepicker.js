@@ -2,13 +2,12 @@
 // disabled dates
 var React = require('react');
 var cloneWithProps = require('react/lib/cloneWithProps');
-var enUS = require('../locale/enUS.js');
 var moment = require('moment');
 var warning = require('react/lib/warning');
-var normalizeDay = require('../utils/normalizeDay');
 var recursivelyMapChildren = require('../utils/recursivelyMapChildren');
+var getDateValues = require('../utils/getDateValues');
 
-var { bool, func, array, shape, string, instanceOf, arrayOf } = React.PropTypes;
+var { bool, func, instanceOf } = React.PropTypes;
 var date = instanceOf(Date);
 
 var DatePicker = module.exports = React.createClass({
@@ -20,10 +19,6 @@ var DatePicker = module.exports = React.createClass({
     readOnly: bool,
     onChange: func,
     onValidationError: func,
-    locale: shape({
-      months: arrayOf(string),
-      days: arrayOf(string)
-    }).isRequired,
     value: (props, propName, componentName) => {
       warning(!(props.value && !props.onChange) || props.readOnly,
         "You provided a `value` prop to a a `Datepicker` without an `onChange` handler. "+
@@ -34,11 +29,7 @@ var DatePicker = module.exports = React.createClass({
   },
 
   getDefaultProps () {
-    var today = new Date();
-    return {
-      locale: enUS,
-      readOnly: false
-    };
+    return { readOnly: false };
   },
 
   getInitialState () {
@@ -51,25 +42,13 @@ var DatePicker = module.exports = React.createClass({
       this.setState({ value: newProps.value });
   },
 
-  getDateValues () {
-    var { value } = this.state;
-    return {
-      year: value.getFullYear(),
-      month: value.getMonth(),
-      day: value.getDate(),
-      hours: value.getHours(),
-      minutes: value.getMinutes(),
-      seconds: value.getSeconds()
-    };
-  },
-
   handleChange (changes) {
     if (this.props.value && !this.props.onChange)
       return;
     var values = Object.keys(changes).reduce((values, fragment) => {
       values[fragment] = changes[fragment];
       return values;
-    }, this.getDateValues());
+    }, getDateValues(this.state.value));
     var { year, month, day, hours, minutes, seconds } = values;
     var newValue = new Date(year, month, day, hours, minutes, seconds);
     this.setState({ value: newValue }, () => {
@@ -77,43 +56,9 @@ var DatePicker = module.exports = React.createClass({
     });
   },
 
-  changeHandlers: {
-    year (newYear) {
-      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
-      return new Date(newYear, month, day, hours, minutes, seconds);
-    },
-
-    month (newMonth) {
-      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
-      var normalizedDay = normalizeDay(year, newMonth, day);
-      return new Date(year, newMonth, normalizedDay, hours, minutes, seconds);
-    },
-
-    day (newDay) {
-      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
-      return new Date(year, month, newDay, hours, minutes, seconds);
-    },
-
-    hour (newHours) {
-      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
-      return new Date(year, month, day, newHours, minutes, seconds);
-    },
-
-    minutes (newMinutes) {
-      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
-      return new Date(year, month, day, hours, newMinutes, seconds);
-    },
-
-    seconds (newSeconds) {
-      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
-      return new Date(year, month, day, hours, minutes, newSeconds);
-    }
-  },
-
   render () {
     var children = recursivelyMapChildren(this.props.children, (child) => {
       return cloneWithProps(child, {
-        locale: this.props.locale,
         value: this.state.value,
         onChange: this.handleChange
       });

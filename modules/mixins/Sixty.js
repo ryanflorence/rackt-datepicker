@@ -9,7 +9,8 @@ var Sixty = module.exports = {
 
   getOnChangeValue (event) {
     var changes = {};
-    changes[this.displayName.toLowerCase()] = parseInt(event.target.value, 10);
+    var name = this.constructor.displayName;
+    changes[name.toLowerCase()] = parseInt(event.target.value, 10);
     return changes;
   },
 
