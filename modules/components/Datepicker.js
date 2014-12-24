@@ -3,7 +3,7 @@ var cloneWithProps = require('react/lib/cloneWithProps');
 var moment = require('moment');
 var warning = require('react/lib/warning');
 var recursivelyMapChildren = require('../utils/recursivelyMapChildren');
-var getDateValues = require('../utils/getDateValues');
+var changeDate = require('../utils/changeDate');
 
 var { bool, func, instanceOf } = React.PropTypes;
 var date = instanceOf(Date);
@@ -40,21 +40,11 @@ var DatePicker = module.exports = React.createClass({
       this.setState({ value: newProps.value });
   },
 
-  handleChange (changesOrDate) {
+  handleChange (changes) {
     if (this.props.value && !this.props.onChange)
       return;
-    var newValue;
-    if (changesOrDate instanceof Date)
-      newValue = changesOrDate;
-    else {
-      var changes = changesOrDate;
-      var values = Object.keys(changes).reduce((values, fragment) => {
-        values[fragment] = changes[fragment];
-        return values;
-      }, getDateValues(this.state.value));
-      var { year, month, day, hours, minutes, seconds } = values;
-      newValue = new Date(year, month, day, hours, minutes, seconds);
-    }
+    var newValue = (changes instanceof Date) ?
+      changes : changeDate(this.state.value, changes);
     this.setState({ value: newValue }, () => {
       this.props.onChange(this.state.value);
     });

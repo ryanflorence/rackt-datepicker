@@ -37,6 +37,8 @@ var SubtractYear = React.createClass({
   handleClick () {
     // you also get `this.props.value` for the current value
     var year = this.props.value.getFullYear();
+    if (year < this.props.lowestPossible)
+      return alert("okay, please stop");
     // and you can change just a fragment of the date with key:value
     this.props.onChange({ year: year - 1});
   },
@@ -94,7 +96,10 @@ var App = React.createClass({
             <Minutes aria-label="Minutes"/>:
             <Seconds aria-label="Seconds"/>
           </p>
-          <p><Today/> <SubtractYear/></p>
+          <p>
+            <Today/>
+            <SubtractYear lowestPossible={tenYearsAgo.getFullYear()}/>
+          </p>
         </Datepicker>
 
         <hr/>
