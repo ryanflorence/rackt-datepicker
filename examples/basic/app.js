@@ -1,6 +1,7 @@
 var React = require('react');
 var { Datepicker, Month, Day, Year, Hours, Minutes, Seconds } = require('react-datepicker');
 
+
 var slug = () => {
   return Math.random().toString(16).slice(2, 10);
 };
@@ -24,6 +25,38 @@ var randomDate = () => {
 var randomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
+var Today = React.createClass({
+  statics: {
+    datePickerChild: true
+  },
+
+  handleClick () {
+    this.props.onChange(new Date());
+  },
+
+  render () {
+    return <button onClick={this.handleClick}>Today</button>;
+  }
+});
+
+var Yesterday = React.createClass({
+  statics: {
+    datePickerChild: true
+  },
+
+  handleClick () {
+    var date = new Date();
+    date.setDate(today.getDate()-1);
+    this.props.onChange(date);
+  },
+
+  render () {
+    return <button onClick={this.handleClick}>Yesterday</button>;
+  }
+});
+
+
 
 var App = React.createClass({
   getInitialState () {
@@ -74,6 +107,11 @@ var App = React.createClass({
             <Minutes aria-label="Minutes"/>
             :
             <Seconds aria-label="Seconds"/>
+          </p>
+
+          <p>
+            Composable!<br/>
+            <Today/> <Yesterday/>
           </p>
         </Datepicker>
 

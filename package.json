@@ -1,26 +1,25 @@
 {
-  "name": "react-router",
-  "version": "0.11.6",
-  "description": "A complete routing library for React.js",
+  "name": "rackt-datepicker",
+  "version": "0.0.0",
+  "description": "Composable Datepicker library for React",
   "main": "./modules/index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rackt/react-router.git"
+    "url": "https://github.com/rackt/rackt-datepicker.git"
   },
-  "homepage": "https://github.com/rackt/react-router/blob/latest/README.md",
-  "bugs": "https://github.com/rackt/react-router/issues",
+  "homepage": "https://github.com/rackt/rackt-datepicker/blob/latest/README.md",
+  "bugs": "https://github.com/rackt/rackt-datepicker/issues",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "build": "NODE_ENV=production webpack modules/index.js dist/react-router.js",
-    "build-min": "NODE_ENV=production COMPRESS=1 webpack modules/index.js dist/react-router.min.js",
+    "build": "NODE_ENV=production webpack modules/index.js dist/rackt-datepicker.js",
+    "build-min": "NODE_ENV=production COMPRESS=1 webpack modules/index.js dist/rackt-datepicker.min.js",
     "examples": "webpack-dev-server --config examples/webpack.config.js --no-info --content-base examples --inline",
     "test": "jsxhint . && karma start"
   },
   "authors": [
-    "Ryan Florence",
-    "Michael Jackson"
+    "Ryan Florence"
   ],
   "license": "MIT",
   "devDependencies": {
@@ -46,21 +45,13 @@
   "peerDependencies": {
     "react": "0.12.x"
   },
-  "dependencies": {
-    "moment": "^2.8.4",
-    "qs": "2.3.3",
-    "when": "3.4.6"
-  },
   "tags": [
     "react",
-    "router"
+    "datepicker"
   ],
   "keywords": [
     "react",
     "react-component",
-    "routing",
-    "route",
-    "routes",
-    "router"
+    "datepicker"
   ]
 }

@@ -42,15 +42,21 @@ var DatePicker = module.exports = React.createClass({
       this.setState({ value: newProps.value });
   },
 
-  handleChange (changes) {
+  handleChange (changesOrNewDate) {
     if (this.props.value && !this.props.onChange)
       return;
-    var values = Object.keys(changes).reduce((values, fragment) => {
-      values[fragment] = changes[fragment];
-      return values;
-    }, getDateValues(this.state.value));
-    var { year, month, day, hours, minutes, seconds } = values;
-    var newValue = new Date(year, month, day, hours, minutes, seconds);
+    var newValue;
+    if (changesOrNewDate instanceof Date)
+      newValue = changesOrNewDate;
+    else {
+      var changes = changesOrNewDate;
+      var values = Object.keys(changes).reduce((values, fragment) => {
+        values[fragment] = changes[fragment];
+        return values;
+      }, getDateValues(this.state.value));
+      var { year, month, day, hours, minutes, seconds } = values;
+      newValue = new Date(year, month, day, hours, minutes, seconds);
+    }
     this.setState({ value: newValue }, () => {
       this.props.onChange(this.state.value);
     });

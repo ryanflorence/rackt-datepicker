@@ -19,7 +19,7 @@ if (process.env.COMPRESS) {
 module.exports = {
 
   output: {
-    library: 'ReactRouter',
+    library: 'Rackt.Datepicker',
     libraryTarget: 'var'
   },
 
