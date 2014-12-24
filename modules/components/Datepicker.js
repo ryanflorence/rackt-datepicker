@@ -57,7 +57,7 @@ var DatePicker = module.exports = React.createClass({
         onChange: this.handleChange
       }) : child;
     });
-    return <div>{children}</div>;
+    return <div className="RacktDatepicker">{children}</div>;
   }
 
 });

@@ -1,4 +1,5 @@
 var React = require('react');
+var pad = require('../../modules/utils/pad');
 var { Datepicker, Month, Day, Year, Hours, Minutes, Seconds } = require('react-datepicker');
 var {
   slug,
@@ -74,8 +75,14 @@ var App = React.createClass({
     this.setState({ date: date, invalidDate });
   },
 
-  handleFooChange (event) {
-    this.setState({ foo: event.target.value });
+  handleRealDateChange (event) {
+    var [year, month, day] = event.target.value.split('-');
+    var date = new Date(year, month-1, day);
+    this.setState({ date: date });
+  },
+
+  dateInputValue (date) {
+    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
   },
 
   render () {
@@ -103,6 +110,12 @@ var App = React.createClass({
         </Datepicker>
 
         <hr/>
+
+        <p>
+          Native<br/>
+          <input type="date" value={this.dateInputValue(this.state.date)} onChange={this.handleRealDateChange}/>
+        </p>
+
         <p>{this.state.invalidDate ? 'Please choose a date in the future' : ''}</p>
       </div>
     );
