@@ -13,9 +13,7 @@ var DateFragment = module.exports = {
   },
 
   propsForComponent () {
-    var props = cloneWithExclusions(this.props, [
-      'locale', 'onChange', 'value'
-    ]);
+    var props = cloneWithExclusions(this.props, ['onChange', 'value']);
     props.onChange = this.handleChange;
     return props;
   }
