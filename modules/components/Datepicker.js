@@ -50,40 +50,58 @@ var DatePicker = module.exports = React.createClass({
       this.setState({ value: newProps.value });
   },
 
-  handleChange (displayName, fragmentValue) {
+  handleChange (fragmentName, fragmentValue) {
     if (this.props.value && !this.props.onChange)
       return;
-    var handler = this.changeHandlers[displayName.toLowerCase()];
+    var handler = this.changeHandlers[fragmentName];
     var newValue = handler.call(this, fragmentValue);
     this.setState({ value: newValue }, () => {
       this.props.onChange(this.state.value);
     });
   },
 
-  getDateAsValues () {
+  getDateValues () {
     var { value } = this.state;
     return {
       year: value.getFullYear(),
       month: value.getMonth(),
-      day: value.getDate()
+      day: value.getDate(),
+      hours: value.getHours(),
+      minutes: value.getMinutes(),
+      seconds: value.getSeconds()
     };
   },
 
   changeHandlers: {
     year (newYear) {
-      var { month, day } = this.getDateAsValues();
-      return new Date(newYear, month, day);
+      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
+      return new Date(newYear, month, day, hours, minutes, seconds);
     },
 
     month (newMonth) {
-      var { year, day } = this.getDateAsValues();
+      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
       var normalizedDay = normalizeDay(year, newMonth, day);
-      return new Date(year, newMonth, normalizedDay);
+      return new Date(year, newMonth, normalizedDay, hours, minutes, seconds);
     },
 
     day (newDay) {
-      var { year, month} = this.getDateAsValues();
-      return new Date(year, month, newDay);
+      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
+      return new Date(year, month, newDay, hours, minutes, seconds);
+    },
+
+    hour (newHours) {
+      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
+      return new Date(year, month, day, newHours, minutes, seconds);
+    },
+
+    minutes (newMinutes) {
+      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
+      return new Date(year, month, day, hours, newMinutes, seconds);
+    },
+
+    seconds (newSeconds) {
+      var { year, month, day, hours, minutes, seconds } = this.getDateValues();
+      return new Date(year, month, day, hours, minutes, newSeconds);
     }
   },
 
@@ -92,7 +110,7 @@ var DatePicker = module.exports = React.createClass({
       return cloneWithProps(child, {
         locale: this.props.locale,
         value: this.state.value,
-        onChange: this.handleChange.bind(this, child.type.displayName)
+        onChange: this.handleChange.bind(this, child.props.fragment)
       });
     });
     return <div>{children}</div>;

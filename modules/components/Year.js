@@ -1,27 +1,39 @@
 var React = require('react');
 var numberRange = require('../utils/numberRange');
-var DateFragment = require('../mixins/DateFragment');
+var FragmentSelect = require('../mixins/FragmentSelect');
 
 var Year = module.exports = React.createClass({
 
   displayName: 'Year',
 
-  mixins: [ DateFragment ],
+  mixins: [ FragmentSelect ],
+
+  getDefaultProps () {
+    var today = new Date();
+    return {
+      fragment: 'year',
+      range: [
+        new Date(today.getFullYear() - 10, today.getMonth()),
+        new Date(today.getFullYear() + 10, today.getMonth())
+      ]
+    };
+  },
 
   getOnChangeValue (event) {
     return parseInt(event.target.value, 10);
   },
 
-  render () {
-    var { value, range } = this.props;
+  renderOptions () {
+    var { range } = this.props;
     var start = range[0].getFullYear();
     var end = range[1].getFullYear();
-    var options = numberRange(start, end).map((year) => {
+    return numberRange(start, end).map((year) => {
       return <option key={year} value={year}>{year}</option>;
     });
-    var props = this.propsForComponent();
-    props.value = value.getFullYear();
-    return <select {...props}>{options}</select>;
+  },
+
+  getValue (date) {
+    return date.getFullYear();
   }
 
 });

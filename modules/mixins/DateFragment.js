@@ -4,7 +4,6 @@ var cloneWithExclusions = require('../utils/cloneWithExclusions');
 var DateFragment = module.exports = {
 
   propTypes: {
-    range: React.PropTypes.arrayOf(React.PropTypes.instanceOf(Date)),
     value: React.PropTypes.instanceOf(Date).isRequired,
     onChange: React.PropTypes.func.isRequired
   },
@@ -15,7 +14,7 @@ var DateFragment = module.exports = {
 
   propsForComponent () {
     var props = cloneWithExclusions(this.props, [
-      'locale', 'onChange', 'value', 'range'
+      'locale', 'onChange', 'value'
     ]);
     props.onChange = this.handleChange;
     return props;

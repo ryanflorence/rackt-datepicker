@@ -1,5 +1,5 @@
 var React = require('react');
-var { Datepicker, Month, Day, Year } = require('react-datepicker');
+var { Datepicker, Month, Day, Year, Hours, Minutes, Seconds } = require('react-datepicker');
 
 var slug = () => {
   return Math.random().toString(16).slice(2, 10);
@@ -14,7 +14,8 @@ var randomDate = () => {
   return new Date(
     randomInt(thisYear + 1, tenYearsFromToday.getFullYear()),
     randomInt(0, 11),
-    randomInt(1, 28)
+    randomInt(1, 28),
+    randomInt(0, 23)
   );
 };
 
@@ -58,9 +59,12 @@ var App = React.createClass({
           value={this.state.date}
           onChange={this.handleDateChange}
         >
+          <Year range={[today, tenYearsFromToday]} aria-label="Year"/>
           <Month aria-label="Month"/>
           <Day aria-label="Day"/>
-          <Year range={[today, tenYearsFromToday]} aria-label="Year"/>
+          <Hours aria-label="Hours"/>
+          <Minutes aria-label="Minutes"/>
+          <Seconds aria-label="Seconds"/>
         </Datepicker>
 
         <pre>
