@@ -86,41 +86,26 @@ var App = React.createClass({
   render () {
     return (
       <div>
-        <p>
-          <button onClick={this.changeStuff}>Change Stuff</button>
-        </p>
+        <p><button onClick={this.changeStuff}>Change Stuff</button></p>
+        <pre>{this.state.date.toString()}</pre>
+
+        <hr/>
 
         <p><label htmlFor="year">Pick a date in the future!</label></p>
-        <Datepicker
-          value={this.state.date}
-          onChange={this.handleDateChange}
-        >
+        <Datepicker value={this.state.date} onChange={this.handleDateChange}>
           <p>
             <Year id="year" range={[today, tenYearsFromToday]} aria-label="Year"/>
             <Month aria-label="Month"/>
             <Day aria-label="Day"/>
-          </p>
-
-          <p>
-            <Hours aria-label="Hours"/>
-            :
-            <Minutes aria-label="Minutes"/>
-            :
+            <Hours aria-label="Hours"/>:
+            <Minutes aria-label="Minutes"/>:
             <Seconds aria-label="Seconds"/>
           </p>
-
-          <p>
-            Composable!<br/>
-            <Today/> <Yesterday/>
-          </p>
+          <p><Today/> <Yesterday/></p>
         </Datepicker>
 
-        <pre>
-          {this.state.date.toString()}
-        </pre>
-        <p>
-          {this.state.invalidDate ? 'Please choose a date in the future' : ''}
-        </p>
+        <hr/>
+        <p>{this.state.invalidDate ? 'Please choose a date in the future' : ''}</p>
       </div>
     );
   }
