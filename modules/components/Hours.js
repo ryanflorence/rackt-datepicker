@@ -13,8 +13,14 @@ var Hour = module.exports = React.createClass({
     datePickerChild: true
   },
 
+  propTypes: {
+    military: React.PropTypes.bool,
+    am: React.PropTypes.string,
+    pm: React.PropTypes.string
+  },
+
   getDefaultProps () {
-    return { am: 'AM', pm: 'PM' };
+    return { military: false, am: 'AM', pm: 'PM' };
   },
 
   getOnChangeValue (event) {
@@ -22,7 +28,9 @@ var Hour = module.exports = React.createClass({
   },
 
   getHourText (hour) {
-    var { am, pm } = this.props;
+    var { military, am, pm } = this.props;
+    if (military)
+      return pad(hour);
     if (hour === 0)
       return `12 ${am}`;
     if (hour === 12)

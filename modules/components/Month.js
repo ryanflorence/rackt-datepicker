@@ -15,9 +15,10 @@ var Month = module.exports = React.createClass({
   mixins: [ FragmentSelect, Locale ],
 
   getOnChangeValue (event) {
-    var year = this.props.value.getFullYear();
+    var { value } = this.props;
+    var year = value.getFullYear();
     var month = parseInt(event.target.value - 1, 10);
-    var day = normalizeDay(year, month, this.props.value.getDate());
+    var day = normalizeDay(year, month, value.getDate());
     return { month, day };
   },
 

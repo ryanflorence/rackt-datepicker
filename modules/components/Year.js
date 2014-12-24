@@ -1,6 +1,7 @@
 var React = require('react');
 var numberRange = require('../utils/numberRange');
 var FragmentSelect = require('../mixins/FragmentSelect');
+var PropTypes = require('../utils/PropTypes');
 
 var Year = module.exports = React.createClass({
 
@@ -10,6 +11,10 @@ var Year = module.exports = React.createClass({
 
   statics: {
     datePickerChild: true
+  },
+
+  propTypes: {
+    range: PropTypes.range
   },
 
   getDefaultProps () {
