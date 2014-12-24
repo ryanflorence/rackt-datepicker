@@ -1,5 +1,3 @@
-// validate years
-// disabled dates
 var React = require('react');
 var cloneWithProps = require('react/lib/cloneWithProps');
 var moment = require('moment');
