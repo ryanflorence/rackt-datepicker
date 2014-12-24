@@ -15,7 +15,9 @@ var randomDate = () => {
     randomInt(thisYear + 1, tenYearsFromToday.getFullYear()),
     randomInt(0, 11),
     randomInt(1, 28),
-    randomInt(0, 23)
+    randomInt(0, 23),
+    randomInt(0, 59),
+    randomInt(0, 59)
   );
 };
 
